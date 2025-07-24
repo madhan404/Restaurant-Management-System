@@ -63,10 +63,10 @@ npm start
 
 - Copy the example environment file and edit it:
   ```bash
-PORT=3000
-MONGODB_URI= your mongodb uri 
-JWT_SECRET= JWT_SECRET-key
-NODE_ENV = development
+  PORT=3000
+  MONGODB_URI= your mongodb uri
+  JWT_SECRET= JWT_SECRET-key
+  NODE_ENV = development
   ```
 - Open `.env` and set your MongoDB URI, JWT secret, and any other required variables.
 
