@@ -58,6 +58,16 @@ node seedData.js
 npm start
 ```
 
+
+#### 2.1. Configure Environment Variables
+
+- Copy the example environment file and edit it:
+  ```bash
+  cp .env.example .env
+  ```
+- Open `.env` and set your MongoDB URI, JWT secret, and any other required variables.
+
+
 ### 3. Setup Frontend
 ```bash
 cd ../frontend
