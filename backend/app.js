@@ -14,24 +14,14 @@ dotenv.config();
 
 const app = express();
 const server = createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST", "PUT", "DELETE"]
-  }
-});
 
-// Middleware
-// app.use(cors({
-//   origin: 'http://localhost:5173',
-//   credentials: true
-// }));
-
+// Allowed frontend origins
 const allowedOrigins = [
   'http://localhost:5173',
   'https://restaurant-managementsystem.netlify.app'
 ];
 
+// Apply CORS middleware for Express
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -45,19 +35,34 @@ app.use(cors({
 
 app.use(express.json());
 
-// Make io accessible to routes
+// Socket.io with CORS
+const io = new Server(server, {
+  cors: {
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+  }
+});
+
+// Make io accessible in all routes
 app.use((req, res, next) => {
   req.io = io;
   next();
 });
 
-// Routes
+//  API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 
-// Socket.io connection handling
+//  Socket.io events
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
   
@@ -71,11 +76,12 @@ io.on('connection', (socket) => {
   });
 });
 
-// MongoDB connection
+//  MongoDB connection
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch((error) => console.error('MongoDB connection error:', error));
 
+//  Start server
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
