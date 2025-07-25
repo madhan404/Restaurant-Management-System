@@ -125,6 +125,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## 🙋‍♂️ Contact
 
-Created by [Madhanraj S](https://github.com/madhan404) and [Deenan T]() — feel free to reach out!
+Created by [Madhanraj S](https://github.com/madhan404) and [Deenan T](https://github.com/Dee2909) — feel free to reach out!
 
 ## ❤️ live preview : [Restaurant Management App]()  <!-- Production only, use localhost for local dev -->
