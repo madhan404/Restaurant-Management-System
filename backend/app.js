@@ -15,6 +15,7 @@ dotenv.config();
 const app = express();
 const server = createServer(app);
 
+
 // Allowed frontend origins
 const allowedOrigins = [
   'http://localhost:5173',
@@ -22,6 +23,7 @@ const allowedOrigins = [
 ];
 
 // Apply CORS middleware for Express
+
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -36,6 +38,7 @@ app.use(cors({
 app.use(express.json());
 
 // Socket.io with CORS
+
 const io = new Server(server, {
   cors: {
     origin: (origin, callback) => {
@@ -50,19 +53,24 @@ const io = new Server(server, {
   }
 });
 
-// Make io accessible in all routes
+// ✅ Make io accessible in all routes
+
 app.use((req, res, next) => {
   req.io = io;
   next();
 });
 
-//  API Routes
+
+// ✅ API Routes
+
 app.use('/api/auth', authRoutes);
 app.use('/api/menu', menuRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 
+
 //  Socket.io events
+
 io.on('connection', (socket) => {
   console.log('User connected:', socket.id);
   
@@ -76,12 +84,16 @@ io.on('connection', (socket) => {
   });
 });
 
+
 //  MongoDB connection
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch((error) => console.error('MongoDB connection error:', error));
 
-//  Start server
+
+
+// ✅ Start server
+
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
